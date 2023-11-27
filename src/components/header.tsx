@@ -1,19 +1,29 @@
 'use client';
 
-import Image from 'next/image';
-import { MdShoppingBasket } from 'react-icons/md';
+import { loginUser } from '@/redux/slices/authSlice';
+import { RootState } from '@/redux/store';
+import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { MdShoppingBasket } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
 import { app } from '../../firebase.config';
 
 const Header = () => {
+    const user = useSelector((state: RootState) => state.auth.user);
+
     const firebaseAuth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
+    const dispatch = useDispatch();
+
     const login = async () => {
-        const response = await signInWithPopup(firebaseAuth, provider);
-        console.log(response);
+        const {
+            user: { refreshToken, providerData },
+        } = await signInWithPopup(firebaseAuth, provider);
+
+        dispatch(loginUser({ actionType: 'SET_USER', user: providerData[0] }));
     };
 
     return (
@@ -50,7 +60,7 @@ const Header = () => {
                     <div className="relative">
                         <motion.img
                             whileTap={{ scale: 0.6 }}
-                            src="/img/avatar.png"
+                            src={user.photoURL ? user.photoURL : '/img/avatar.png'}
                             alt="user_profile"
                             className="min-w-[40px] w-10 min-h-[40px] h-10 drop-shadow-xl cursor-pointer"
                             onClick={login}

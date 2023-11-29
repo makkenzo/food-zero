@@ -9,7 +9,7 @@ import store from '@/redux/store';
 const HomePage = () => {
     return (
         <Provider store={store}>
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
                 <div className="w-screen h-auto flex flex-col bg-primary">
                     <Header />
 

@@ -6,3 +6,11 @@ export interface IUser {
     providerId: string;
     uid: string;
 }
+
+export interface IHeroData {
+    id: number;
+    name: string;
+    description: string;
+    price: number;
+    imageSrc: string;
+}

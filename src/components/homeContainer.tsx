@@ -79,7 +79,10 @@ const HomeContainer = () => {
                     height={815}
                 />
 
-                <div className="w-full h-full absolute top-0 left-28 flex items-center justify-center px-32 py-4 gap-8 flex-wrap">
+                {/* <h1 className="w-full absolute top-8 -left-8 flex items-center justify-center font-semibold text-xl">
+                    Популярное
+                </h1> */}
+                <div className="w-full h-[85vh] absolute top-8 left-28 flex items-center justify-center px-32 pt-16 pb-24 gap-8 flex-wrap">
                     {heroData && heroData.length > 0 ? (
                         heroData.map((item, index) => (
                             <div

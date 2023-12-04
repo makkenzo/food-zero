@@ -1,9 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import authReducer from './slices/authSlice';
-import { encryptTransform } from 'redux-persist-transform-encrypt';
-import storage from 'redux-persist/lib/storage';
 import { persistReducer } from 'redux-persist';
+import { encryptTransform } from 'redux-persist-transform-encrypt';
 import persistStore from 'redux-persist/es/persistStore';
+import storage from 'redux-persist/lib/storage';
+import authReducer from './slices/authSlice';
+import dataReducer from './slices/dataSlice';
 
 const SECRET_KEY = process.env.SECRET_KEY ?? 'my-super-secret-key';
 
@@ -18,13 +19,14 @@ const transforms = [
 
 const rootReducer = combineReducers({
     auth: authReducer,
+    data: dataReducer,
 });
 
 const persistConfig = {
     key: 'root',
     storage,
     transforms,
-    whitelist: ['auth'],
+    whitelist: ['auth', 'data'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -9,7 +9,8 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { MdAdd, MdLogout, MdShoppingBasket } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { app } from '../../firebase.config';
+import { app, getItems } from '../../firebase.config';
+import { setFoodItems } from '@/redux/slices/dataSlice';
 
 const Header = () => {
     const user = useSelector((state: RootState) => state.auth.user);
@@ -25,13 +26,29 @@ const Header = () => {
 
     const dispatch = useDispatch();
 
+    const data = useSelector((state: RootState) => state.data.items);
+
+    useEffect(() => {
+        const fetchItems = async () => {
+            try {
+                const items = await getItems();
+
+                dispatch(setFoodItems(items));
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchItems();
+    }, []);
+
     const login = async () => {
         if (!user.email) {
             const {
                 user: { refreshToken, providerData },
             } = await signInWithPopup(firebaseAuth, provider);
 
-            dispatch(loginUser({ actionType: 'SET_USER', user: providerData[0] }));
+            dispatch(loginUser({ user: providerData[0] }));
         } else {
             setIsMenuOpen(!isMenuOpen);
         }
@@ -40,7 +57,6 @@ const Header = () => {
     const logout = () => {
         dispatch(
             loginUser({
-                actionType: null,
                 user: {
                     displayName: null,
                     email: null,
@@ -52,7 +68,7 @@ const Header = () => {
             })
         );
 
-        // window.location.reload();
+        window.location.reload();
     };
 
     return (

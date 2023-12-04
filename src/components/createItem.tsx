@@ -6,6 +6,9 @@ import { FaTenge } from 'react-icons/fa';
 import { MdCloudUpload, MdDelete, MdFastfood, MdFoodBank } from 'react-icons/md';
 import { Loader } from '.';
 import { db, getCategories, saveNewItem, storage } from '../../firebase.config';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { redirect } from 'next/navigation';
 
 const CreateItem = () => {
     const [title, setTitle] = useState('');
@@ -19,6 +22,9 @@ const CreateItem = () => {
     const [imageAsset, setImageAsset] = useState<undefined | string>('');
     const [calories, setCalories] = useState<number>();
 
+    const user = useSelector((state: RootState) => state.auth.user);
+    const [isAdmin, setIsAdmin] = useState(false);
+
     useEffect(() => {
         const fetchCategories = async () =>
             await getCategories(db).then((data) => {
@@ -27,6 +33,15 @@ const CreateItem = () => {
 
         fetchCategories();
     }, []);
+
+    useEffect(() => {
+        if (user.email === 'nekgo2009@gmail.com') {
+            setIsAdmin(true);
+        } else {
+            setIsAdmin(false);
+            redirect('/');
+        }
+    }, [user]);
 
     const uploadImage = (e: ChangeEvent<HTMLInputElement>) => {
         setIsLoading(true);

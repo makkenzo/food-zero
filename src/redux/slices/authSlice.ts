@@ -9,7 +9,6 @@ interface AuthState {
         providerId: string | null;
         uid: string | null;
     };
-    actionType: string | null;
 }
 
 const initialState: AuthState = {
@@ -21,7 +20,6 @@ const initialState: AuthState = {
         providerId: null,
         uid: null,
     },
-    actionType: null,
 };
 
 const authSlice = createSlice({
@@ -30,7 +28,6 @@ const authSlice = createSlice({
     reducers: {
         loginUser: (state, action: PayloadAction<AuthState>) => {
             state.user = action.payload.user;
-            state.actionType = action.payload.actionType;
         },
     },
 });

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { HomeContainer, RowContainer } from '.';
+import { HomeContainer, MenuContainer, RowContainer } from '.';
 import { motion } from 'framer-motion';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import { useEffect, useState } from 'react';
@@ -25,27 +25,27 @@ const MainContainer = () => {
                         <motion.div
                             whileTap={{ scale: 0.75 }}
                             className="w-8 h-8 rounded-lg bg-orange-300 hover:bg-orange-500 cursor-pointer  hover:shadow-lg flex items-center justify-center"
-                            onClick={() => setScrollValue(-200)}
+                            onClick={() => setScrollValue(-400)}
                         >
                             <MdChevronLeft className="text-lg text-white" />
                         </motion.div>
                         <motion.div
                             whileTap={{ scale: 0.75 }}
                             className="w-8 h-8 rounded-lg bg-orange-300 hover:bg-orange-500 cursor-pointer transition-all duration-100 ease-in-out hover:shadow-lg flex items-center justify-center"
-                            onClick={() => setScrollValue(200)}
+                            onClick={() => setScrollValue(400)}
                         >
                             <MdChevronRight className="text-lg text-white" />
                         </motion.div>
                     </div>
                 </div>
-                {data && (
-                    <RowContainer
-                        scrollValue={scrollValue}
-                        flag
-                        data={data.filter((n: IFoodItem) => n.category === 'fruits')}
-                    />
-                )}
+                <RowContainer
+                    scrollValue={scrollValue}
+                    flag={true}
+                    data={data?.filter((n: IFoodItem) => n.category === 'fruits')}
+                />
             </section>
+
+            <MenuContainer />
         </div>
     );
 };

@@ -8,10 +8,10 @@ import { addItemsToCart } from '@/redux/slices/cartSlice';
 interface RowContainerProps {
     flag: boolean;
     data: IFoodItem[];
-    scrollValue: number;
+    scrollValue?: number;
 }
 
-const RowContainer = ({ flag, data, scrollValue }: RowContainerProps) => {
+const RowContainer = ({ flag, data, scrollValue = 20 }: RowContainerProps) => {
     const rowContainer = useRef<HTMLDivElement>(null);
     const [cartItem, setCartItem] = useState<IFoodItem[]>([]);
     const dispatch = useDispatch();
@@ -34,12 +34,15 @@ const RowContainer = ({ flag, data, scrollValue }: RowContainerProps) => {
         <div
             ref={rowContainer}
             className={`w-full flex items-center gap-3 my-12 scroll-smooth ${
-                flag ? 'overflow-x-scroll scrollbar-none' : 'overflow-x-hidden flex-wrap justify-center'
+                flag ? 'overflow-x-scroll no-scrollbar' : 'overflow-x-hidden flex-wrap justify-center'
             }`}
         >
             {data && data.length > 0 ? (
                 data.map((item) => (
-                    <div className="w-275 h-[175px] min-w-[275px] md:w-300 md:min-w-[300px]  bg-cardOverlay rounded-lg py-2 px-4  my-12 backdrop-blur-lg hover:drop-shadow-lg flex flex-col items-center justify-evenly relative">
+                    <div
+                        key={item.id}
+                        className="w-275 h-[175px] min-w-[275px] md:w-300 md:min-w-[300px]  bg-cardOverlay rounded-lg py-2 px-4  my-12 backdrop-blur-lg hover:drop-shadow-lg flex flex-col items-center justify-evenly relative"
+                    >
                         <div className="w-full flex items-center justify-between">
                             <motion.div className="w-40 h-40 -mt-8 drop-shadow-2xl" whileHover={{ scale: 1.2 }}>
                                 <img src={item?.imageURL} alt="fruit" className="w-full h-full object-contain" />

@@ -22,13 +22,13 @@ export interface ICategory {
 }
 
 export interface IFoodItem {
-    id: string;
-    title: string;
-    imageURL: string;
-    category: string;
-    calories: number;
-    qty: number;
-    price: number;
+    id: string | null;
+    title: string | null;
+    imageURL: string | undefined;
+    category: string | null;
+    calories: number | null;
+    qty: number | null;
+    price: number | null;
 }
 
 export interface IDataState {

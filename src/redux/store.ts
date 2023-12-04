@@ -5,6 +5,7 @@ import persistStore from 'redux-persist/es/persistStore';
 import storage from 'redux-persist/lib/storage';
 import authReducer from './slices/authSlice';
 import dataReducer from './slices/dataSlice';
+import cartReducer from './slices/cartSlice';
 
 const SECRET_KEY = process.env.SECRET_KEY ?? 'my-super-secret-key';
 
@@ -20,13 +21,14 @@ const transforms = [
 const rootReducer = combineReducers({
     auth: authReducer,
     data: dataReducer,
+    cart: cartReducer,
 });
 
 const persistConfig = {
     key: 'root',
     storage,
     transforms,
-    whitelist: ['auth', 'data'],
+    whitelist: ['auth', 'cart'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

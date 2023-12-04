@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import React, { useEffect, useRef, useState } from 'react';
 import { MdShoppingBasket } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
+import { addItemsToCart } from '@/redux/slices/cartSlice';
 
 interface RowContainerProps {
     flag: boolean;
@@ -12,12 +13,11 @@ interface RowContainerProps {
 
 const RowContainer = ({ flag, data, scrollValue }: RowContainerProps) => {
     const rowContainer = useRef<HTMLDivElement>(null);
-    const [items, setItems] = useState([]);
+    const [cartItem, setCartItem] = useState<IFoodItem[]>([]);
     const dispatch = useDispatch();
 
     const addToCart = () => {
-        // dispatch({cartItems:items})
-        localStorage.setItem('cartItems', JSON.stringify(items));
+        dispatch(addItemsToCart(cartItem));
     };
 
     useEffect(() => {
@@ -28,7 +28,7 @@ const RowContainer = ({ flag, data, scrollValue }: RowContainerProps) => {
 
     useEffect(() => {
         addToCart();
-    }, [items]);
+    }, [cartItem]);
 
     return (
         <div
@@ -47,6 +47,7 @@ const RowContainer = ({ flag, data, scrollValue }: RowContainerProps) => {
                             <motion.div
                                 whileTap={{ scale: 0.75 }}
                                 className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center cursor-pointer hover:shadow-md -mt-8"
+                                onClick={() => setCartItem([item])}
                             >
                                 <MdShoppingBasket className="text-white" />
                             </motion.div>

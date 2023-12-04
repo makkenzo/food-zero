@@ -20,3 +20,23 @@ export interface ICategory {
     name: string;
     urlParamName: string;
 }
+
+export interface INewItem {
+    id: string;
+    title: string;
+    imageURL: string;
+    category: string;
+    calories: number;
+    qty: number;
+    price: number;
+}
+
+// const data = {
+//     id: `${Date.now()}`,
+//     title: title,
+//     imageURL: imageAsset,
+//     category: category,
+//     calories: calories,
+//     qty: 1,
+//     price: price,
+// };

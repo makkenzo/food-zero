@@ -1,25 +1,23 @@
-import { RootState } from '@/redux/store';
+import { ICategory } from '@/types';
+import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { motion } from 'framer-motion';
 import React, { ChangeEvent, useEffect, useState } from 'react';
+import { FaTenge } from 'react-icons/fa';
 import { MdCloudUpload, MdDelete, MdFastfood, MdFoodBank } from 'react-icons/md';
-import { useSelector } from 'react-redux';
-import { db, app, getCategories, storage } from '../../firebase.config';
-import { ICategory } from '@/types';
-import Image from 'next/image';
-import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { Loader } from '.';
+import { db, getCategories, saveNewItem, storage } from '../../firebase.config';
 
 const CreateItem = () => {
     const [title, setTitle] = useState('');
     const [categories, setCategories] = useState<ICategory[]>();
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState<number>();
     const [category, setCategory] = useState('');
     const [fields, setFields] = useState(false);
     const [alertStatus, setAlertStatus] = useState('danger');
     const [message, setMessage] = useState<null | string>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [imageAsset, setImageAsset] = useState<undefined | string>('');
-    const [calories, setCalories] = useState(0);
+    const [calories, setCalories] = useState<number>();
 
     useEffect(() => {
         const fetchCategories = async () =>
@@ -86,8 +84,61 @@ const CreateItem = () => {
         });
     };
 
+    const saveDetails = () => {
+        setIsLoading(true);
+
+        try {
+            if (!title || !calories || !imageAsset || !price || !category) {
+                setFields(true);
+                setMessage('Заполните все данные!');
+                setAlertStatus('danger');
+                setTimeout(() => {
+                    setFields(false);
+                    setIsLoading(false);
+                }, 4000);
+            } else {
+                const data = {
+                    id: `${Date.now()}`,
+                    title: title,
+                    imageURL: imageAsset,
+                    category: category,
+                    calories: calories,
+                    qty: 1,
+                    price: price,
+                };
+
+                saveNewItem(data);
+                setIsLoading(false);
+                setFields(true);
+                setMessage('Данные успешно загружены');
+                setAlertStatus('success');
+                setTimeout(() => {
+                    setFields(false);
+                }, 4000);
+                clearData();
+            }
+        } catch (error) {
+            console.log(error);
+            setFields(true);
+            setMessage('Произошла ошибка при сохранении');
+            setAlertStatus('danger');
+            setTimeout(() => {
+                setFields(false);
+                setIsLoading(false);
+            }, 4000);
+        }
+    };
+
+    const clearData = () => {
+        setTitle('');
+        setImageAsset(undefined);
+        setCalories(0);
+        setPrice(0);
+        setCategory('other');
+    };
+
     return (
-        <div className="w-full min-h-screen flex items-center justify-center">
+        <div className="w-full min-h-[83vh] flex items-center justify-center">
             <div className="w-[90%] md:w-[50%] border border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center gap-4">
                 {fields && (
                     <motion.p
@@ -188,10 +239,32 @@ const CreateItem = () => {
                             required
                             value={calories}
                             onChange={(e) => setCalories(parseFloat(e.target.value))}
-                            placeholder="Calories"
+                            placeholder="Калории"
                             className="w-full h-full text-lg bg-transparent outline-none border-none placeholder:text-gray-400 text-textColor"
                         />
                     </div>
+
+                    <div className="w-full py-2 border-b border-gray-300 flex items-center gap-2">
+                        <FaTenge className="text-gray-700 text-xl" />
+                        <input
+                            type="number"
+                            required
+                            value={price}
+                            onChange={(e) => setPrice(parseFloat(e.target.value))}
+                            placeholder="Цена"
+                            className="w-full h-full text-lg bg-transparent outline-none border-none placeholder:text-gray-400 text-textColor"
+                        />
+                    </div>
+                </div>
+
+                <div className="flex items-center w-full">
+                    <button
+                        type="button"
+                        className="ml-0 md:ml-auto w-full md:w-auto border-none outline-none bg-emerald-500 px-12 py-2 rounded-lg text-lg text-white font-semibold"
+                        onClick={saveDetails}
+                    >
+                        Сохранить
+                    </button>
                 </div>
             </div>
         </div>

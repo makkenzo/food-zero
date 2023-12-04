@@ -70,16 +70,28 @@ const Header = () => {
                         exit={{ opacity: 0, x: 200 }}
                         className="flex items-center gap-8"
                     >
-                        <li className="text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer">
+                        <li
+                            className="text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
                             Главная
                         </li>
-                        <li className="text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer">
+                        <li
+                            className="text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
                             Меню
                         </li>
-                        <li className="text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer">
+                        <li
+                            className="text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
                             О нас
                         </li>
-                        <li className="text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer">
+                        <li
+                            className="text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
                             Сервис
                         </li>
                     </motion.ul>

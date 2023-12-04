@@ -14,3 +14,9 @@ export interface IHeroData {
     price: number;
     imageSrc: string;
 }
+
+export interface ICategory {
+    id: number;
+    name: string;
+    urlParamName: string;
+}

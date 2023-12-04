@@ -15,7 +15,6 @@ const CreateItemPage = () => {
                     <CreateItem />
                 </main>
             </div>
-            s
         </Provider>
     );
 };

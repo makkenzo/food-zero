@@ -26,8 +26,6 @@ const Header = () => {
 
     const dispatch = useDispatch();
 
-    const data = useSelector((state: RootState) => state.data.items);
-
     useEffect(() => {
         const fetchItems = async () => {
             try {

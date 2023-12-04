@@ -30,3 +30,7 @@ export interface IFoodItem {
     qty: number;
     price: number;
 }
+
+export interface IDataState {
+    items: IFoodItem[];
+}

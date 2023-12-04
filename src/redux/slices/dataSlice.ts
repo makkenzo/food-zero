@@ -1,7 +1,7 @@
-import { IFoodItem } from '@/types';
+import { IDataState, IFoodItem } from '@/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+const initialState: IDataState = {
     items: [
         {
             id: '',

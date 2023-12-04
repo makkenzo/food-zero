@@ -1,4 +1,5 @@
 import { IHeroData } from '@/types';
+import { formatNumber } from '@/utils';
 import Image from 'next/image';
 
 const heroData: IHeroData[] = [
@@ -33,10 +34,6 @@ const heroData: IHeroData[] = [
 ];
 
 const HomeContainer = () => {
-    const formatNumber = (price: number) => {
-        return new Intl.NumberFormat('ru-RU').format(price);
-    };
-
     return (
         <section className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full h-[88vh]" id="home">
             <div className="py-2 flex-1 flex flex-col items-center md:items-start justify-center gap-6">

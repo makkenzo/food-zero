@@ -1,5 +1,5 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { persistReducer } from 'redux-persist';
+import { combineReducers, configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer } from 'redux-persist';
 import { encryptTransform } from 'redux-persist-transform-encrypt';
 import persistStore from 'redux-persist/es/persistStore';
 import storage from 'redux-persist/lib/storage';
@@ -34,6 +34,13 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 const store = configureStore({
     reducer: persistedReducer,
     devTools: true,
+    middleware: [
+        ...getDefaultMiddleware({
+            serializableCheck: {
+                ignoreActions: true,
+            },
+        }),
+    ],
 });
 
 export const persistor = persistStore(store);

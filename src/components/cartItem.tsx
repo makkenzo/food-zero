@@ -3,8 +3,8 @@ import { RootState } from '@/redux/store';
 import { ICartItem, IFoodItem } from '@/types';
 import { motion } from 'framer-motion';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { BiMinus, BiPlus } from 'react-icons/bi';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface CartItemProps {
     item: IFoodItem;

@@ -1,11 +1,11 @@
-import { ICategory, IFoodItem } from '@/types';
-import React, { useEffect, useState } from 'react';
-import { db, getCategories } from '../../firebase.config';
-import { motion } from 'framer-motion';
-import { IoFastFood } from 'react-icons/io5';
-import { RowContainer } from '.';
-import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import { ICategory, IFoodItem } from '@/types';
+import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { IoFastFood } from 'react-icons/io5';
+import { useSelector } from 'react-redux';
+import { RowContainer } from '.';
+import { db, getCategories } from '../../firebase.config';
 
 const MenuContainer = () => {
     const [searchFilter, setSearchFilter] = useState('pizza-pasta');

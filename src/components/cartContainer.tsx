@@ -1,11 +1,11 @@
 import { clearCartReducer, setIsCartShow } from '@/redux/slices/cartSlice';
 import { RootState } from '@/redux/store';
+import { IFoodItem } from '@/types';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { MdOutlineKeyboardBackspace } from 'react-icons/md';
-import { useDispatch, useSelector } from 'react-redux';
 import { RiRefreshFill } from 'react-icons/ri';
-import { IFoodItem } from '@/types';
+import { useDispatch, useSelector } from 'react-redux';
 import { CartItem } from '.';
 
 const CartContainer = () => {

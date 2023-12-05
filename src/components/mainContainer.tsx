@@ -1,7 +1,7 @@
 import { RootState } from '@/redux/store';
 import { IFoodItem } from '@/types';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 import { CartContainer, HomeContainer, MenuContainer, RowContainer } from '.';

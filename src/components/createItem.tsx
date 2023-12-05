@@ -1,14 +1,14 @@
+import { RootState } from '@/redux/store';
 import { ICategory } from '@/types';
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { motion } from 'framer-motion';
+import { redirect } from 'next/navigation';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { FaTenge } from 'react-icons/fa';
 import { MdCloudUpload, MdDelete, MdFastfood, MdFoodBank } from 'react-icons/md';
+import { useSelector } from 'react-redux';
 import { Loader } from '.';
 import { db, getCategories, saveNewItem, storage } from '../../firebase.config';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
-import { redirect } from 'next/navigation';
 
 const CreateItem = () => {
     const [title, setTitle] = useState('');

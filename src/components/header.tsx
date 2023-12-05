@@ -1,6 +1,8 @@
 'use client';
 
 import { loginUser } from '@/redux/slices/authSlice';
+import { setIsCartShow } from '@/redux/slices/cartSlice';
+import { setFoodItems } from '@/redux/slices/dataSlice';
 import { RootState } from '@/redux/store';
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 import { motion } from 'framer-motion';
@@ -10,8 +12,6 @@ import { useEffect, useState } from 'react';
 import { MdAdd, MdLogout, MdShoppingBasket } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { app, getItems } from '../../firebase.config';
-import { setFoodItems } from '@/redux/slices/dataSlice';
-import { setIsCartShow } from '@/redux/slices/cartSlice';
 
 const Header = () => {
     const user = useSelector((state: RootState) => state.auth.user);

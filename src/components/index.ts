@@ -1,21 +1,21 @@
-import Header from './header';
-import MainContainer from './mainContainer';
-import CreateItem from './createItem';
-import HomeContainer from './homeContainer';
-import Loader from './loader';
-import RowContainer from './rowContainer';
-import MenuContainer from './menuContainer';
 import CartContainer from './cartContainer';
 import CartItem from './cartItem';
+import CreateItem from './createItem';
+import Header from './header';
+import HomeContainer from './homeContainer';
+import Loader from './loader';
+import MainContainer from './mainContainer';
+import MenuContainer from './menuContainer';
+import RowContainer from './rowContainer';
 
 export {
-    Header,
-    MainContainer,
-    CreateItem,
-    HomeContainer,
-    Loader,
-    RowContainer,
-    MenuContainer,
     CartContainer,
     CartItem,
+    CreateItem,
+    Header,
+    HomeContainer,
+    Loader,
+    MainContainer,
+    MenuContainer,
+    RowContainer,
 };

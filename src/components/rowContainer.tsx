@@ -1,9 +1,9 @@
-import { IDataState, IFoodItem } from '@/types';
+import { addItemsToCart } from '@/redux/slices/cartSlice';
+import { IFoodItem } from '@/types';
 import { motion } from 'framer-motion';
 import React, { useEffect, useRef, useState } from 'react';
 import { MdShoppingBasket } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
-import { addItemsToCart } from '@/redux/slices/cartSlice';
 
 interface RowContainerProps {
     flag: boolean;

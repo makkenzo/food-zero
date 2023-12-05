@@ -1,10 +1,10 @@
 'use client';
 
 import { Header, MainContainer } from '@/components';
-import React from 'react';
-import { AnimatePresence } from 'framer-motion';
-import { Provider } from 'react-redux';
 import store from '@/redux/store';
+import { AnimatePresence } from 'framer-motion';
+import React from 'react';
+import { Provider } from 'react-redux';
 
 const HomePage = () => {
     return (

@@ -1,15 +1,16 @@
-import Image from 'next/image';
-import { HomeContainer, MenuContainer, RowContainer } from '.';
-import { motion } from 'framer-motion';
-import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { IFoodItem } from '@/types';
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
+import { useSelector } from 'react-redux';
+import { CartContainer, HomeContainer, MenuContainer, RowContainer } from '.';
 
 const MainContainer = () => {
     const [scrollValue, setScrollValue] = useState(0);
+
     const data = useSelector((state: RootState) => state.data.items);
+    const boolCartShow = useSelector((state: RootState) => state.cart.isCartShow);
 
     return (
         <div className="w-full h-auto flex flex-col items-center justify-center">
@@ -46,6 +47,8 @@ const MainContainer = () => {
             </section>
 
             <MenuContainer />
+
+            {boolCartShow && <CartContainer />}
         </div>
     );
 };

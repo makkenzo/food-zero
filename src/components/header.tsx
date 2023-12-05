@@ -11,11 +11,13 @@ import { MdAdd, MdLogout, MdShoppingBasket } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { app, getItems } from '../../firebase.config';
 import { setFoodItems } from '@/redux/slices/dataSlice';
+import { setIsCartShow } from '@/redux/slices/cartSlice';
 
 const Header = () => {
     const user = useSelector((state: RootState) => state.auth.user);
     const [userPhoto, setUserPhoto] = useState<string>('');
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+    const boolCartShow = useSelector((state: RootState) => state.cart.isCartShow);
 
     useEffect(() => {
         setUserPhoto(user.photoURL);
@@ -69,6 +71,10 @@ const Header = () => {
         window.location.reload();
     };
 
+    const showCart = () => {
+        dispatch(setIsCartShow(!boolCartShow));
+    };
+
     return (
         <header className="w-screen fixed z-10 md:p-6 md:px-16 p-3 px-4 bg-primary">
             {/* desktop & tablet */}
@@ -110,7 +116,7 @@ const Header = () => {
                         </li>
                     </motion.ul>
 
-                    <div className="relative flex items-center justify-center">
+                    <div className="relative flex items-center justify-center" onClick={showCart}>
                         <MdShoppingBasket className="text-textColor text-2xl cursor-pointer" />
                         <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center">
                             <p className="text-xs text-white font-semibold">2</p>

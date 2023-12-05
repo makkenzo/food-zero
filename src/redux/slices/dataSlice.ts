@@ -13,6 +13,7 @@ const initialState: IDataState = {
             price: 0,
         },
     ],
+    isCartShow: false,
 };
 
 const dataSlice = createSlice({

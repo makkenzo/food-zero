@@ -27,10 +27,21 @@ export interface IFoodItem {
     imageURL: string | undefined;
     category: string | null;
     calories: number | null;
-    qty: number | null;
-    price: number | null;
+    qty: number;
+    price: number;
+}
+
+export interface ICartItem {
+    id: string;
+    title: string;
+    imageURL: string | undefined;
+    category: string;
+    calories: number;
+    qty: number;
+    price: number;
 }
 
 export interface IDataState {
     items: IFoodItem[];
+    isCartShow: boolean;
 }

@@ -5,5 +5,17 @@ import HomeContainer from './homeContainer';
 import Loader from './loader';
 import RowContainer from './rowContainer';
 import MenuContainer from './menuContainer';
+import CartContainer from './cartContainer';
+import CartItem from './cartItem';
 
-export { Header, MainContainer, CreateItem, HomeContainer, Loader, RowContainer, MenuContainer };
+export {
+    Header,
+    MainContainer,
+    CreateItem,
+    HomeContainer,
+    Loader,
+    RowContainer,
+    MenuContainer,
+    CartContainer,
+    CartItem,
+};

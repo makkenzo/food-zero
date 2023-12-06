@@ -47,3 +47,9 @@ export interface IDataState {
     subTotal?: number;
     deliveryPrice?: number;
 }
+
+export interface ICoupon {
+    code: string;
+    discountPercentage: number;
+    expiryDate: string;
+}

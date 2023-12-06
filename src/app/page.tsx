@@ -1,6 +1,6 @@
 'use client';
 
-import { Header, MainContainer } from '@/components';
+import { Footer, Header, MainContainer } from '@/components';
 import store from '@/redux/store';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
@@ -16,6 +16,8 @@ const HomePage = () => {
                     <main className="mt-14 md:mt-20 px-4 md:px-16 py-4 w-full">
                         <MainContainer />
                     </main>
+
+                    <Footer />
                 </div>
             </AnimatePresence>
         </Provider>

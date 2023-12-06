@@ -7,6 +7,7 @@ import Loader from './loader';
 import MainContainer from './mainContainer';
 import MenuContainer from './menuContainer';
 import RowContainer from './rowContainer';
+import Footer from './footer';
 
 export {
     CartContainer,
@@ -18,4 +19,5 @@ export {
     MainContainer,
     MenuContainer,
     RowContainer,
+    Footer,
 };

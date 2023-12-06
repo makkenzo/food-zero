@@ -25,29 +25,23 @@ const CartItem = ({ item, setFlag, flag }: CartItemProps) => {
     };
 
     const updateQty = (newQty: number) => {
-        // Ensure the new quantity is within a valid range (e.g., not negative)
-        newQty = Math.max(1, newQty);
-
-        // Find the index of the item in the cart
+        newQty = Math.max(0, newQty); // Изменение на Math.max(0, newQty)
         const itemIndex = cartItems.findIndex((cartItem) => cartItem.id === item.id);
-
-        // Create a copy of the cartItems array to avoid mutating state directly
         const updatedCartItems = [...cartItems];
 
-        // If the item is already in the cart, update its quantity
-        if (itemIndex !== -1) {
+        if (newQty === 0) {
+            // Удаляем товар из корзины, если количество становится 0
+            updatedCartItems.splice(itemIndex, 1);
+        } else if (itemIndex !== -1) {
             updatedCartItems[itemIndex] = {
                 ...updatedCartItems[itemIndex],
                 qty: newQty,
             };
         }
 
-        // Dispatch the updated cart items to the Redux store
         dispatch(setCartItems(updatedCartItems));
-
-        // Update local state to trigger re-render
         setQty(newQty);
-        setFlag((prevFlag) => prevFlag + 1); // Update flag to trigger re-render in CartContainer
+        setFlag((prevFlag) => prevFlag + 1);
     };
 
     useEffect(() => {
@@ -55,7 +49,6 @@ const CartItem = ({ item, setFlag, flag }: CartItemProps) => {
     }, [qty, items]);
 
     useEffect(() => {
-        // Update local state when cartItems changes to reflect the current quantity
         const cartItem = cartItems.find((cartItem) => cartItem.id === item.id);
         if (cartItem) {
             setQty(cartItem.qty || 1);

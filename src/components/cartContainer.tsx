@@ -7,6 +7,9 @@ import { MdOutlineKeyboardBackspace } from 'react-icons/md';
 import { RiRefreshFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { CartItem } from '.';
+import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
+import { app } from '../../firebase.config';
+import { loginUser } from '@/redux/slices/authSlice';
 
 const CartContainer = () => {
     const boolCartShow = useSelector((state: RootState) => state.cart.isCartShow);
@@ -33,6 +36,17 @@ const CartContainer = () => {
         }, 0);
         setSubTotal(totalPrice);
     }, [subTotal, flag, cartItems]);
+
+    const firebaseAuth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    const login = async () => {
+        const {
+            user: { refreshToken, providerData },
+        } = await signInWithPopup(firebaseAuth, provider);
+
+        dispatch(loginUser({ user: providerData[0] }));
+    };
 
     return (
         <motion.div
@@ -83,7 +97,7 @@ const CartContainer = () => {
                             <p className="text-gray-400 text-lg">{deliveryPrice + subTotal} ₸</p>
                         </div>
 
-                        {!user.displayName === null ? (
+                        {user.displayName !== null ? (
                             <motion.button
                                 whileTap={{ scale: 0.8 }}
                                 type="button"
@@ -95,6 +109,7 @@ const CartContainer = () => {
                             <motion.button
                                 whileTap={{ scale: 0.8 }}
                                 type="button"
+                                onClick={login}
                                 className="w-full p-2 rounded-full bg-gradient-to-tr from-orange-400 to-orange-600 text-gray-50 text-lg my-2 hover:shadow-lg"
                             >
                                 Войдите чтобы продолжить

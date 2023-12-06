@@ -1,15 +1,16 @@
-import { clearCartReducer, setIsCartShow } from '@/redux/slices/cartSlice';
+import { loginUser } from '@/redux/slices/authSlice';
+import { clearCartReducer, setIsCartShow, setPriceReducer } from '@/redux/slices/cartSlice';
 import { RootState } from '@/redux/store';
 import { IFoodItem } from '@/types';
+import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { MdOutlineKeyboardBackspace } from 'react-icons/md';
 import { RiRefreshFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { CartItem } from '.';
-import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 import { app } from '../../firebase.config';
-import { loginUser } from '@/redux/slices/authSlice';
 
 const CartContainer = () => {
     const boolCartShow = useSelector((state: RootState) => state.cart.isCartShow);
@@ -21,6 +22,7 @@ const CartContainer = () => {
     const [deliveryPrice, setDeliveryPrice] = useState(890);
 
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const showCart = () => {
         dispatch(setIsCartShow(!boolCartShow));
@@ -35,6 +37,7 @@ const CartContainer = () => {
             return accumulator + item.qty * item.price;
         }, 0);
         setSubTotal(totalPrice);
+        dispatch(setPriceReducer({ subTotal: totalPrice, deliveryPrice: deliveryPrice }));
     }, [subTotal, flag, cartItems]);
 
     const firebaseAuth = getAuth(app);
@@ -101,6 +104,7 @@ const CartContainer = () => {
                             <motion.button
                                 whileTap={{ scale: 0.8 }}
                                 type="button"
+                                onClick={() => router.push('/check-out')}
                                 className="w-full p-2 rounded-full bg-gradient-to-tr from-orange-400 to-orange-600 text-gray-50 text-lg my-2 hover:shadow-lg"
                             >
                                 Оформить заказ

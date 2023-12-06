@@ -10,9 +10,10 @@ interface CartItemProps {
     item: IFoodItem;
     setFlag: Dispatch<SetStateAction<number>>;
     flag: number;
+    isRouded?: boolean;
 }
 
-const CartItem = ({ item, setFlag, flag }: CartItemProps) => {
+const CartItem = ({ item, setFlag, flag, isRouded = true }: CartItemProps) => {
     let items: ICartItem[] = [];
 
     const cartItems: ICartItem[] = useSelector((state: RootState) => state.cart.items);
@@ -56,13 +57,13 @@ const CartItem = ({ item, setFlag, flag }: CartItemProps) => {
     }, [cartItems, item.id]);
 
     return (
-        <div className="w-full p-1 px-2 rounded-lg bg-cartItem flex items-center gap-2">
+        <div className={`w-full p-1 px-2 ${isRouded ? 'rounded-lg' : ''} bg-cartItem flex items-center gap-2`}>
             <img src={item?.imageURL} alt="itemImage" className="w-20 h-20 max-w-[60px] object-contain" />
 
             {/* name section */}
             <div className="flex flex-col gap-2">
                 <p className="text-base text-gray-50">{item?.title}</p>
-                {item.price && qty && <p className="text-sm block text-gray-300 font-semibold">{item.price * qty}</p>}
+                {item.price && qty && <p className="text-sm block text-gray-300 font-semibold">{item.price * qty} ₸</p>}
             </div>
 
             <div className="group flex items-center gap-2 ml-auto cursor-pointer">

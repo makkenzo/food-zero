@@ -95,9 +95,9 @@ const HomeContainer = () => {
                                 />
                                 <p className="text-xl font-semibold text-textColor mt-4">{item.name}</p>
                                 <p className="text-sm text-lighttextGray font-semibold my-4">{item.description}</p>
-                                <p className="text-sm font-semibold text-headingColor">
+                                {/* <p className="text-sm font-semibold text-headingColor">
                                     {formatNumber(item.price)} <span className="text-xs text-red-600">₸</span>
-                                </p>
+                                </p> */}
                             </div>
                         ))
                     ) : (

@@ -44,4 +44,6 @@ export interface ICartItem {
 export interface IDataState {
     items: IFoodItem[];
     isCartShow: boolean;
+    subTotal?: number;
+    deliveryPrice?: number;
 }

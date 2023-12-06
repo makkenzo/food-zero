@@ -133,12 +133,14 @@ const Header = () => {
                         </li>
                     </motion.ul>
 
-                    <div className="relative flex items-center justify-center" onClick={showCart}>
-                        <MdShoppingBasket className="text-textColor text-2xl cursor-pointer" />
-                        <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center">
-                            {cart && <p className="text-xs text-white font-semibold">{cart.length}</p>}
+                    {pathname === '/' && (
+                        <div className="relative flex items-center justify-center" onClick={showCart}>
+                            <MdShoppingBasket className="text-textColor text-2xl cursor-pointer" />
+                            <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center">
+                                {cart && <p className="text-xs text-white font-semibold">{cart.length}</p>}
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     {userPhoto ? (
                         <div className="relative">

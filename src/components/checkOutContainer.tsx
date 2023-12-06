@@ -1,0 +1,161 @@
+import { RootState } from '@/redux/store';
+import { IDataState } from '@/types';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { CartItem } from '.';
+import { Card, List, ListItem, ListItemPrefix, Typography, Radio } from '@material-tailwind/react';
+import { FaCcMastercard, FaCcVisa, FaMoneyBillWave } from 'react-icons/fa';
+import { setPriceReducer } from '@/redux/slices/cartSlice';
+
+const CheckOutContainer = () => {
+    const cart: IDataState = useSelector((state: RootState) => state.cart);
+    const dispatch = useDispatch();
+    const [couponCode, setCouponCode] = useState('');
+
+    const [flag, setFlag] = useState<number>(0);
+
+    useEffect(() => {
+        let totalPrice = cart.items.reduce(function (accumulator, item) {
+            return accumulator + item.qty * item.price;
+        }, 0);
+
+        if (cart.deliveryPrice !== undefined) {
+            dispatch(setPriceReducer({ subTotal: totalPrice, deliveryPrice: cart.deliveryPrice }));
+        }
+    }, [flag, cart.items]);
+
+    return (
+        <div className="grid grid-cols-3 gap-8">
+            <div className="bg-white p-8 rounded-lg shadow-lg">
+                <h2 className="text-2xl font-bold mb-4">Ваш ксанакс</h2>
+                {cart.items.map((item) => (
+                    <CartItem key={item.id} item={item} setFlag={setFlag} flag={flag} isRouded={false} />
+                ))}
+            </div>
+            <div className="bg-white p-8 rounded-lg shadow-lg">
+                <fieldset>
+                    <legend className="font-semibold mb-4">Способ оплаты</legend>
+
+                    <Card className="shadow-xl mb-4">
+                        <List>
+                            <ListItem className="p-0">
+                                <label
+                                    htmlFor="vertical-list-react"
+                                    className="flex w-full cursor-pointer items-center px-3 py-2"
+                                >
+                                    <ListItemPrefix className="mr-3">
+                                        <Radio
+                                            crossOrigin
+                                            name="vertical-list"
+                                            id="vertical-list-react"
+                                            ripple={false}
+                                            className="hover:before:opacity-0"
+                                            containerProps={{
+                                                className: 'p-0',
+                                            }}
+                                        />
+                                    </ListItemPrefix>
+                                    <Typography
+                                        color="blue-gray"
+                                        className="font-medium text-blue-gray-400 flex items-center space-x-2"
+                                    >
+                                        <FaCcVisa size={25} color="#1434cb" />
+                                        <span>Visa</span>
+                                    </Typography>
+                                </label>
+                            </ListItem>
+                            <ListItem className="p-0">
+                                <label
+                                    htmlFor="vertical-list-vue"
+                                    className="flex w-full cursor-pointer items-center px-3 py-2"
+                                >
+                                    <ListItemPrefix className="mr-3">
+                                        <Radio
+                                            crossOrigin
+                                            name="vertical-list"
+                                            id="vertical-list-vue"
+                                            ripple={false}
+                                            className="hover:before:opacity-0"
+                                            containerProps={{
+                                                className: 'p-0',
+                                            }}
+                                        />
+                                    </ListItemPrefix>
+                                    <Typography
+                                        color="blue-gray"
+                                        className="font-medium text-blue-gray-400 flex items-center space-x-2"
+                                    >
+                                        <FaCcMastercard size={25} color="#ff5f00" />
+                                        <span>Master Card</span>
+                                    </Typography>
+                                </label>
+                            </ListItem>
+                            <ListItem className="p-0">
+                                <label
+                                    htmlFor="vertical-list-svelte"
+                                    className="flex w-full cursor-pointer items-center px-3 py-2"
+                                >
+                                    <ListItemPrefix className="mr-3">
+                                        <Radio
+                                            crossOrigin
+                                            name="vertical-list"
+                                            id="vertical-list-svelte"
+                                            ripple={false}
+                                            className="hover:before:opacity-0"
+                                            containerProps={{
+                                                className: 'p-0',
+                                            }}
+                                        />
+                                    </ListItemPrefix>
+                                    <Typography
+                                        color="blue-gray"
+                                        className="font-medium text-blue-gray-400 flex items-center space-x-2"
+                                    >
+                                        <FaMoneyBillWave size={25} color="#86dc3d" />
+                                        <span>Наличными курьеру</span>
+                                    </Typography>
+                                </label>
+                            </ListItem>
+                        </List>
+                    </Card>
+                </fieldset>
+                <div>
+                    <h2 className="font-semibold mb-4">Цены и купон</h2>
+                    <div className="mb-4">
+                        <div className="flex justify-between w-full text-gray-500">
+                            <p>Промежуточная сумма</p>
+                            <p>{cart.subTotal} ₸</p>
+                        </div>
+                        <div className="flex justify-between w-full text-gray-500">
+                            <p>Стоимость доставки</p>
+                            <p>{cart.deliveryPrice} ₸</p>
+                        </div>
+                        <div className="flex justify-between w-full text-gray-500">
+                            <p>Скидка 0%</p>
+                            <p>-790 ₸</p>
+                        </div>
+                        <hr className="my-2" />
+                        <div className="flex justify-between w-full">
+                            <p>Итого</p>
+                            <p>-790 ₸</p>
+                        </div>
+                        <div className="flex justify-between w-full mt-2">
+                            <input
+                                type="text"
+                                className=" p-2 border-l border-t border-b border-gray-300 outline-none w-full"
+                                placeholder="Введите купон"
+                                value={couponCode}
+                                onChange={(e) => setCouponCode(e.target.value)}
+                            />
+                            <button className="w-full md:w-auto bg-green-500 outline-none bg-emerald-500 px-4 py-2 text-md text-white rounded-r-md border-t border-r border-b border-gray-300">
+                                Применить
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default CheckOutContainer;

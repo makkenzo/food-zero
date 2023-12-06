@@ -4,6 +4,8 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 const initialState: IDataState = {
     items: [],
     isCartShow: false,
+    subTotal: 0,
+    deliveryPrice: 0,
 };
 
 const findItemIndex = (cartItems: IFoodItem[], newItem: IFoodItem): number => {
@@ -18,13 +20,14 @@ const cartSlice = createSlice({
             const newItems = action.payload;
 
             for (const newItem of newItems) {
+                /* finding the index of an existing item in the `state.items` array that matches the `newItem` being added to the cart. */
                 const existingIndex = findItemIndex(state.items, newItem);
 
+                /* checking if the `existingIndex` is not equal to -1, which means
+                that the `newItem` already exists in the `state.items` array. */
                 if (existingIndex !== -1) {
-                    // If the item already exists in the cart, update its quantity
                     state.items[existingIndex].qty = (state.items[existingIndex].qty || 1) + 1;
                 } else {
-                    // If the item is not in the cart, add it with a quantity of 1
                     state.items.push({ ...newItem, qty: 1 });
                 }
             }
@@ -38,8 +41,12 @@ const cartSlice = createSlice({
         clearCartReducer: (state, action: PayloadAction<boolean>) => {
             state.items = action.payload === true ? [] : [...state.items];
         },
+        setPriceReducer: (state, action: PayloadAction<{ subTotal: number; deliveryPrice: number }>) => {
+            state.subTotal = action.payload.subTotal;
+            state.deliveryPrice = action.payload.deliveryPrice;
+        },
     },
 });
 
-export const { addItemsToCart, setIsCartShow, clearCartReducer, setCartItems } = cartSlice.actions;
+export const { addItemsToCart, setIsCartShow, clearCartReducer, setCartItems, setPriceReducer } = cartSlice.actions;
 export default cartSlice.reducer;

@@ -14,6 +14,7 @@ const CheckOutContainer = () => {
     const [couponCode, setCouponCode] = useState('');
     const [couponResponse, setCouponResponse] = useState<boolean | ICoupon>();
     const [totalAmount, setTotalAmount] = useState(0);
+    const [couponDiscount, setCouponDiscount] = useState(0);
 
     const [flag, setFlag] = useState<number>(0);
 
@@ -41,6 +42,11 @@ const CheckOutContainer = () => {
             setTotalAmount(totalPrice + cart.deliveryPrice);
             if (typeof couponResponse === 'object') {
                 setTotalAmount((totalPrice + cart.deliveryPrice) * ((100 - couponResponse.discountPercentage) / 100));
+                setCouponDiscount(
+                    totalPrice +
+                        cart.deliveryPrice -
+                        (totalPrice + cart.deliveryPrice) * ((100 - couponResponse.discountPercentage) / 100)
+                );
             }
         }
     }, [flag, cart.items, couponResponse]);
@@ -158,7 +164,7 @@ const CheckOutContainer = () => {
                                     ? `${couponResponse.discountPercentage}%`
                                     : '0%'}
                             </p>
-                            {/* <p>-{couponResponse && typeof couponResponse === 'object' ? `${}`} ₸</p> */}
+                            <p>-{couponDiscount} ₸</p>
                         </div>
                         <hr className="my-2" />
                         <div className="flex justify-between w-full">
@@ -176,7 +182,7 @@ const CheckOutContainer = () => {
                                 />
                                 <button
                                     onClick={handleCouponValidate}
-                                    className="w-full md:w-auto bg-green-500 outline-none bg-emerald-500 px-4 py-2 text-md text-white rounded-r-md border-t border-r border-b border-gray-300"
+                                    className="w-full md:w-auto bg-green-500 outline-none px-4 py-2 text-md text-white rounded-r-md border-t border-r border-b border-gray-300"
                                 >
                                     Применить
                                 </button>

@@ -2,9 +2,9 @@ import { RootState } from '@/redux/store';
 import { ICoupon, IDataState } from '@/types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CartItem } from '.';
-import { Card, List, ListItem, ListItemPrefix, Typography, Radio } from '@material-tailwind/react';
-import { FaCcMastercard, FaCcVisa, FaMoneyBillWave } from 'react-icons/fa';
+import { CartItem, PaymentForm } from '.';
+import { Card, List, ListItem, ListItemPrefix, Typography, Radio, CardHeader } from '@material-tailwind/react';
+import { FaCcVisa, FaCreditCard, FaMoneyBillWave, FaPaypal } from 'react-icons/fa';
 import { setPriceReducer } from '@/redux/slices/cartSlice';
 import { db, getCouponByCode } from '../../firebase.config';
 
@@ -15,6 +15,7 @@ const CheckOutContainer = () => {
     const [couponResponse, setCouponResponse] = useState<boolean | ICoupon>();
     const [totalAmount, setTotalAmount] = useState(0);
     const [couponDiscount, setCouponDiscount] = useState(0);
+    const [paymentType, setPaymentType] = useState('card');
 
     const [flag, setFlag] = useState<number>(0);
 
@@ -63,7 +64,7 @@ const CheckOutContainer = () => {
                 <fieldset>
                     <legend className="font-semibold mb-4">Способ оплаты</legend>
 
-                    <Card className="shadow-xl mb-4">
+                    <Card className="shadow-xl">
                         <List>
                             <ListItem className="p-0">
                                 <label
@@ -86,34 +87,8 @@ const CheckOutContainer = () => {
                                         color="blue-gray"
                                         className="font-medium text-blue-gray-400 flex items-center space-x-2"
                                     >
-                                        <FaCcVisa size={25} color="#1434cb" />
-                                        <span>Visa</span>
-                                    </Typography>
-                                </label>
-                            </ListItem>
-                            <ListItem className="p-0">
-                                <label
-                                    htmlFor="vertical-list-vue"
-                                    className="flex w-full cursor-pointer items-center px-3 py-2"
-                                >
-                                    <ListItemPrefix className="mr-3">
-                                        <Radio
-                                            crossOrigin
-                                            name="vertical-list"
-                                            id="vertical-list-vue"
-                                            ripple={false}
-                                            className="hover:before:opacity-0"
-                                            containerProps={{
-                                                className: 'p-0',
-                                            }}
-                                        />
-                                    </ListItemPrefix>
-                                    <Typography
-                                        color="blue-gray"
-                                        className="font-medium text-blue-gray-400 flex items-center space-x-2"
-                                    >
-                                        <FaCcMastercard size={25} color="#ff5f00" />
-                                        <span>Master Card</span>
+                                        <FaCreditCard size={25} color="#000" />
+                                        <span>Картой</span>
                                     </Typography>
                                 </label>
                             </ListItem>
@@ -146,6 +121,7 @@ const CheckOutContainer = () => {
                         </List>
                     </Card>
                 </fieldset>
+                <PaymentForm type={paymentType} setType={setPaymentType} />
                 <div>
                     <h2 className="font-semibold mb-4">Цены и купон</h2>
                     <div className="mb-4">
@@ -196,6 +172,9 @@ const CheckOutContainer = () => {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="bg-white p-8 rounded-lg shadow-lg">
+                <h2 className="text-2xl font-bold mb-4">Условия доставки</h2>
             </div>
         </div>
     );

@@ -49,6 +49,7 @@ const CartContainer = () => {
         } = await signInWithPopup(firebaseAuth, provider);
 
         dispatch(loginUser({ user: providerData[0] }));
+        window.location.reload();
     };
 
     return (

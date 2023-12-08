@@ -11,7 +11,7 @@ const CheckOutPage = () => {
             <div className="w-screen h-auto flex flex-col bg-primary">
                 <Header />
 
-                <div className="main mt-24 p-8 w-full h-[90vh]">
+                <div className="main mt-24 p-8 w-full min-h-[90vh]">
                     <CheckOutContainer />
                 </div>
 

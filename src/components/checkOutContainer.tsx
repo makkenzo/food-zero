@@ -1,21 +1,26 @@
 import { RootState } from '@/redux/store';
-import { ICoupon, IDataState } from '@/types';
+import { ICard, ICoupon, IDataState } from '@/types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CartItem, PaymentForm } from '.';
-import { Card, List, ListItem, ListItemPrefix, Typography, Radio, CardHeader } from '@material-tailwind/react';
-import { FaCcVisa, FaCreditCard, FaMoneyBillWave, FaPaypal } from 'react-icons/fa';
+import { Card, List, ListItem, ListItemPrefix, Typography, Radio } from '@material-tailwind/react';
+import { FaCreditCard, FaMoneyBillWave } from 'react-icons/fa';
 import { setPriceReducer } from '@/redux/slices/cartSlice';
 import { db, getCouponByCode } from '../../firebase.config';
 
 const CheckOutContainer = () => {
     const cart: IDataState = useSelector((state: RootState) => state.cart);
+    const card: ICard = useSelector((state: RootState) => state.card);
     const dispatch = useDispatch();
+
     const [couponCode, setCouponCode] = useState('');
     const [couponResponse, setCouponResponse] = useState<boolean | ICoupon>();
     const [totalAmount, setTotalAmount] = useState(0);
     const [couponDiscount, setCouponDiscount] = useState(0);
-    const [paymentType, setPaymentType] = useState('card');
+    const [paymentType, setPaymentType] = useState('');
+    const [deliveryInstructions, setDeliveryInstructions] = useState('');
+    const [deliveryAddress, setDeliveryAddress] = useState('');
+    const [makeOrderErrorMessage, setMakeOrderErrorMessage] = useState('');
 
     const [flag, setFlag] = useState<number>(0);
 
@@ -52,10 +57,29 @@ const CheckOutContainer = () => {
         }
     }, [flag, cart.items, couponResponse]);
 
+    const handleMakeOrder = () => {
+        if (!paymentType) {
+            setMakeOrderErrorMessage('Выберите способ оплаты.');
+            return;
+        }
+
+        if (paymentType === 'card' && !deliveryAddress) {
+            setMakeOrderErrorMessage('Введите адрес доставки для оплаты картой.');
+            return;
+        }
+
+        if (paymentType === 'cash' && !deliveryAddress) {
+            setMakeOrderErrorMessage('Введите адрес доставки для наличной оплаты.');
+            return;
+        }
+
+        setMakeOrderErrorMessage('');
+    };
+
     return (
         <div className="grid grid-cols-3 gap-8">
             <div className="bg-white p-8 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-bold mb-4">Ваш ксанакс</h2>
+                <h2 className="text-2xl font-bold mb-4">Ваш заказ</h2>
                 {cart.items.map((item) => (
                     <CartItem key={item.id} item={item} setFlag={setFlag} flag={flag} isRouded={false} />
                 ))}
@@ -66,7 +90,7 @@ const CheckOutContainer = () => {
 
                     <Card className="shadow-xl">
                         <List>
-                            <ListItem className="p-0">
+                            <ListItem className="p-0" onClick={() => setPaymentType('card')}>
                                 <label
                                     htmlFor="vertical-list-react"
                                     className="flex w-full cursor-pointer items-center px-3 py-2"
@@ -85,14 +109,17 @@ const CheckOutContainer = () => {
                                     </ListItemPrefix>
                                     <Typography
                                         color="blue-gray"
-                                        className="font-medium text-blue-gray-400 flex items-center space-x-2"
+                                        className="font-medium text-blue-gray-400 flex items-center space-x-2 w-full"
                                     >
                                         <FaCreditCard size={25} color="#000" />
-                                        <span>Картой</span>
+                                        <div className="flex justify-between w-full">
+                                            <span>Картой</span>
+                                            <span>{'*' + card.card.cardNumber.slice(-4)}</span>
+                                        </div>
                                     </Typography>
                                 </label>
                             </ListItem>
-                            <ListItem className="p-0">
+                            <ListItem className="p-0" onClick={() => setPaymentType('cash')}>
                                 <label
                                     htmlFor="vertical-list-svelte"
                                     className="flex w-full cursor-pointer items-center px-3 py-2"
@@ -121,7 +148,11 @@ const CheckOutContainer = () => {
                         </List>
                     </Card>
                 </fieldset>
-                <PaymentForm type={paymentType} setType={setPaymentType} />
+                {paymentType === 'card' ? (
+                    <PaymentForm type={paymentType} setType={setPaymentType} />
+                ) : (
+                    <div className="my-4"></div>
+                )}
                 <div>
                     <h2 className="font-semibold mb-4">Цены и купон</h2>
                     <div className="mb-4">
@@ -158,7 +189,7 @@ const CheckOutContainer = () => {
                                 />
                                 <button
                                     onClick={handleCouponValidate}
-                                    className="w-full md:w-auto bg-green-500 outline-none px-4 py-2 text-md text-white rounded-r-md border-t border-r border-b border-gray-300"
+                                    className="w-full md:w-auto bg-green-500 hover:bg-green-600 outline-none px-4 py-2 text-md text-white rounded-r-md border-t border-r border-b border-gray-300"
                                 >
                                     Применить
                                 </button>
@@ -175,6 +206,43 @@ const CheckOutContainer = () => {
             </div>
             <div className="bg-white p-8 rounded-lg shadow-lg">
                 <h2 className="text-2xl font-bold mb-4">Условия доставки</h2>
+                <div className="mb-4">
+                    <label htmlFor="delivery-address" className="block text-sm font-medium mb-2">
+                        Адрес доставки
+                    </label>
+                    <input
+                        type="text"
+                        id="delivery-address"
+                        className="border p-2 w-full rounded-md"
+                        placeholder="Введите ваш адрес"
+                        value={deliveryAddress}
+                        onChange={(e) => setDeliveryAddress(e.target.value)}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label htmlFor="delivery-instructions" className="block text-sm font-medium mb-2">
+                        Инструкции к доставке
+                    </label>
+                    <textarea
+                        id="delivery-instructions"
+                        className="border p-2 w-full rounded-md resize-none"
+                        placeholder="Особые инструкции или заметки к заказу"
+                        value={deliveryInstructions}
+                        onChange={(e) => setDeliveryInstructions(e.target.value)}
+                    />
+                </div>
+                <div className="w-full mb-4">
+                    <button
+                        type="button"
+                        className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md"
+                        onClick={handleMakeOrder}
+                    >
+                        Оформить заказ
+                    </button>
+                </div>
+                <div className="mb-4">
+                    <p className="text-sm text-red-500">{makeOrderErrorMessage}</p>
+                </div>
             </div>
         </div>
     );

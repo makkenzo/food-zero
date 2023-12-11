@@ -1,3 +1,5 @@
+import firebase from 'firebase/compat/app';
+
 export interface IUser {
     displayName: string;
     email: string;
@@ -52,4 +54,24 @@ export interface ICoupon {
     code: string;
     discountPercentage: number;
     expiryDate: string;
+}
+
+export interface ICard {
+    card: {
+        cardNumber: string;
+        cardExpirityDate: string;
+        cardCvc: string;
+    };
+}
+
+export interface IOrder {
+    items: ICartItem[];
+    deliveryInstructions: string;
+    deliveryStatus: string;
+    orderId: string;
+    orderStatus: string;
+    paymentMethod: string;
+    timestamp: firebase.firestore.Timestamp;
+    totalPrice: string;
+    userId: string;
 }

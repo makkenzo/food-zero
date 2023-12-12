@@ -65,13 +65,13 @@ export interface ICard {
 }
 
 export interface IOrder {
-    items: ICartItem[];
+    cartItems: IFoodItem[];
     deliveryInstructions: string;
     deliveryStatus: string;
     orderId: string;
     orderStatus: string;
     paymentMethod: string;
     timestamp: firebase.firestore.Timestamp;
-    totalPrice: string;
-    userId: string;
+    totalPrice: number;
+    userUid: string;
 }

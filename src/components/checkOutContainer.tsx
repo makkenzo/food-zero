@@ -5,13 +5,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CartItem, PaymentForm } from '.';
 import { Card, List, ListItem, ListItemPrefix, Typography, Radio } from '@material-tailwind/react';
 import { FaCreditCard, FaMoneyBillWave } from 'react-icons/fa';
-import { setPriceReducer } from '@/redux/slices/cartSlice';
-import { db, getCouponByCode } from '../../firebase.config';
+import { clearCartReducer, setPriceReducer } from '@/redux/slices/cartSlice';
+import { db, getCouponByCode, placeOrder } from '../../firebase.config';
+import { redirect, useRouter } from 'next/navigation';
 
 const CheckOutContainer = () => {
     const cart: IDataState = useSelector((state: RootState) => state.cart);
     const card: ICard = useSelector((state: RootState) => state.card);
+    const user = useSelector((state: RootState) => state.auth.user);
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const [couponCode, setCouponCode] = useState('');
     const [couponResponse, setCouponResponse] = useState<boolean | ICoupon>();
@@ -57,23 +60,34 @@ const CheckOutContainer = () => {
         }
     }, [flag, cart.items, couponResponse]);
 
-    const handleMakeOrder = () => {
+    const handleMakeOrder = async () => {
         if (!paymentType) {
             setMakeOrderErrorMessage('Выберите способ оплаты.');
             return;
         }
-
         if (paymentType === 'card' && !deliveryAddress) {
             setMakeOrderErrorMessage('Введите адрес доставки для оплаты картой.');
             return;
         }
-
         if (paymentType === 'cash' && !deliveryAddress) {
             setMakeOrderErrorMessage('Введите адрес доставки для наличной оплаты.');
             return;
         }
-
         setMakeOrderErrorMessage('');
+
+        try {
+            const response = await placeOrder(user.uid, cart.items, deliveryInstructions, paymentType, totalAmount);
+
+            if (response) {
+                console.log('Order placed successfully. OrderId:', response);
+                dispatch(clearCartReducer(true));
+                router.push('/orders');
+            } else {
+                console.error('Failed to place order. Response:', response);
+            }
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (

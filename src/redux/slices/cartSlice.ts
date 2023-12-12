@@ -20,11 +20,8 @@ const cartSlice = createSlice({
             const newItems = action.payload;
 
             for (const newItem of newItems) {
-                /* finding the index of an existing item in the `state.items` array that matches the `newItem` being added to the cart. */
                 const existingIndex = findItemIndex(state.items, newItem);
 
-                /* checking if the `existingIndex` is not equal to -1, which means
-                that the `newItem` already exists in the `state.items` array. */
                 if (existingIndex !== -1) {
                     state.items[existingIndex].qty = (state.items[existingIndex].qty || 1) + 1;
                 } else {

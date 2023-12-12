@@ -49,7 +49,7 @@ const PaymentForm = ({ type, setType }: PaymentFormProps) => {
     const handleSaveCard = () => {
         dispatch(setCard({ card: { cardNumber, cardExpirityDate: cardExpires, cardCvc } }));
 
-        setType('');
+        setType('card');
     };
 
     return (

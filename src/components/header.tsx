@@ -129,7 +129,7 @@ const Header = () => {
                             className="text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer"
                             onClick={() => setIsMenuOpen(false)}
                         >
-                            <Link href="/service">Сервис</Link>
+                            <Link href="/orders">Мои заказы</Link>
                         </li>
                     </motion.ul>
 

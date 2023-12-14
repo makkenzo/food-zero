@@ -42,7 +42,16 @@ const StatusContainer = () => {
                         {statusMessage}
                     </h1>
                 </div>
-                <Button onClick={() => router.push('/')}>На главную</Button>
+                <div className="flex w-full space-x-2">
+                    {status === 'success' && (
+                        <Button className="w-full" onClick={() => router.push('/orders')}>
+                            Мои заказы
+                        </Button>
+                    )}
+                    <Button className="w-full" onClick={() => router.push('/')}>
+                        На главную
+                    </Button>
+                </div>
             </div>
         </div>
     );

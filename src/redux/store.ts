@@ -7,6 +7,7 @@ import authReducer from './slices/authSlice';
 import cartReducer from './slices/cartSlice';
 import dataReducer from './slices/dataSlice';
 import cardReducer from './slices/cardSlice';
+import statusReducer from './slices/statusSlice';
 
 const SECRET_KEY = process.env.SECRET_KEY ?? 'my-super-secret-key';
 
@@ -24,13 +25,14 @@ const rootReducer = combineReducers({
     data: dataReducer,
     cart: cartReducer,
     card: cardReducer,
+    status: statusReducer,
 });
 
 const persistConfig = {
     key: 'root',
     storage,
     transforms,
-    whitelist: ['auth', 'cart', 'card'],
+    whitelist: ['auth', 'cart', 'card', 'status'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

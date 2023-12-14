@@ -75,3 +75,13 @@ export interface IOrder {
     totalPrice: number;
     userUid: string;
 }
+
+export enum StatusEnum {
+    Success = 'success',
+    Pending = 'pending',
+    Failure = 'failure',
+}
+
+export interface IStatus {
+    status: StatusEnum;
+}

@@ -1,5 +1,5 @@
 import { RootState } from '@/redux/store';
-import { ICard, ICoupon, IDataState } from '@/types';
+import { ICard, ICoupon, IDataState, StatusEnum } from '@/types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CartItem, PaymentForm } from '.';
@@ -8,6 +8,7 @@ import { FaCreditCard, FaMoneyBillWave } from 'react-icons/fa';
 import { clearCartReducer, setPriceReducer } from '@/redux/slices/cartSlice';
 import { db, getCouponByCode, placeOrder } from '../../firebase.config';
 import { redirect, useRouter } from 'next/navigation';
+import { setStatus } from '@/redux/slices/statusSlice';
 
 const CheckOutContainer = () => {
     const cart: IDataState = useSelector((state: RootState) => state.cart);
@@ -81,7 +82,8 @@ const CheckOutContainer = () => {
             if (response) {
                 console.log('Order placed successfully. OrderId:', response);
                 dispatch(clearCartReducer(true));
-                router.push('/orders');
+                dispatch(setStatus({ status: StatusEnum.Success }));
+                router.push('/status');
             } else {
                 console.error('Failed to place order. Response:', response);
             }

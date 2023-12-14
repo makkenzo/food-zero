@@ -10,6 +10,7 @@ import MenuContainer from './menuContainer';
 import OrdersContainer from './ordersContainer';
 import PaymentForm from './paymentForm';
 import RowContainer from './rowContainer';
+import StatusContainer from './statusContainer';
 
 export {
     CartContainer,
@@ -24,4 +25,5 @@ export {
     OrdersContainer,
     PaymentForm,
     RowContainer,
+    StatusContainer,
 };
